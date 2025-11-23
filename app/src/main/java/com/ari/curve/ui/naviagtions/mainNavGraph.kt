@@ -4,7 +4,12 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -15,11 +20,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ari.curve.BuildConfig
+import com.ari.curve.data.UserCache
+import com.ari.curve.data.dao.User
 import com.ari.curve.ui.screens.MainScreen
 import com.ari.curve.ui.screens.SignInScreen
 import com.ari.curve.ui.viewmodels.MainViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 @Composable
@@ -29,11 +37,26 @@ fun NavGraph (
     vm : MainViewModel,
     modifier: Modifier
 ) {
+    var startDestination by remember {  mutableStateOf(Screen.signin.route)}
+    LaunchedEffect(Unit) {
+        val user: User? = UserCache.cachedUserFlow(context).firstOrNull()
+        val email: String? = UserCache.cachedEmailFlow(context).firstOrNull()
+        if (user != null && email != null) {
+            vm.currUser = user
+            vm.currentUserEmail = email
+            startDestination = Screen.mainChatScreen.route
+
+        } else {
+            startDestination = Screen.signin.route
+        }
+
+    }
     val coroutineScope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
-    NavHost(navController = navHostController, startDestination = Screen.signin.route) {
+    NavHost(navController = navHostController, startDestination = startDestination) {
+
         composable(route = Screen.mainChatScreen.route) {
-            MainScreen()
+            MainScreen(vm,modifier)
         }
         composable(route= Screen.signin.route) {
             SignInScreen({
@@ -75,4 +98,5 @@ fun NavGraph (
 sealed class Screen(val route:String){
     object mainChatScreen: Screen(route = "main_chat_screen")
     object signin : Screen(route = "signin_screen")
+    object wait_screen : Screen(route ="waiting_screen")
 }

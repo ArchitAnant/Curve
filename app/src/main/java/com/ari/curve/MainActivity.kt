@@ -11,8 +11,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.ari.curve.data.FirebaseManager
+import com.ari.curve.data.GeminiRepo
 import com.ari.curve.ui.naviagtions.NavGraph
 import com.ari.curve.ui.screens.MainScreen
 import com.ari.curve.ui.theme.CurveTheme
@@ -26,8 +29,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             CurveTheme {
                 val navHostController = rememberNavController()
-                val main_vm = MainViewModel(navHostController)
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val firebaseManager = FirebaseManager()
+                val geminiRepo = GeminiRepo()
+                val main_vm = MainViewModel(firebaseManager,navHostController,geminiRepo)
+                Scaffold(modifier = Modifier.fillMaxSize(), containerColor = Color.Black) { innerPadding ->
 
                     NavGraph(this,navHostController,main_vm,modifier = Modifier.padding(innerPadding))
                 }
