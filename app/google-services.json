@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "691776344222",
+    "project_id": "curve-android",
+    "storage_bucket": "curve-android.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:691776344222:android:e23bddf938894b6241eb8f",
+        "android_client_info": {
+          "package_name": "com.ari.curve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "691776344222-j1hpm0jkanuhb4m5pr2qcbjhlgaou3bt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0SSMmOvDDFz9ZQJycx8o_CiAUkJpRu1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "691776344222-j1hpm0jkanuhb4m5pr2qcbjhlgaou3bt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
