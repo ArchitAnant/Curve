@@ -89,7 +89,7 @@ fun TaskDrawer(task: Task, onDismissRequest: ()-> Unit,markDone:(String)->Unit,m
                     .fillMaxWidth()
                     .padding(top = 20.dp),
             ) {
-                if (task.attachments[task.attachments.keys.toList()[0]]?.isNotEmpty() == true){
+                if (task.attachments.isNotEmpty()){
                     LazyRow(
                         modifier = Modifier.clip(RoundedCornerShape(10.dp)).weight(0.7f)
                             .padding(end = 10.dp),
@@ -99,16 +99,15 @@ fun TaskDrawer(task: Task, onDismissRequest: ()-> Unit,markDone:(String)->Unit,m
 
                         items(task.attachments.size) {
                             Text(
-                                text = task.attachments.keys.toList()[it],
+                                text = task.attachments[it].link_name,
                                 fontFamily = regular_font,
                                 fontSize = 15.sp,
                                 color = Color.White,
                                 modifier = Modifier.clip(RoundedCornerShape(20.dp))
                                     .background(Color.White.copy(0.1f)).padding(10.dp)
                                     .clickable{
-                                        if (task.attachments[task.attachments.keys.toList()[it]]?.isNotEmpty() == true) {
-                                            uriHandler.openUri(task.attachments[task.attachments.keys.toList()[it]]!!)
-                                        }
+                                            uriHandler.openUri(task.attachments[it].url)
+
                                     }
                             )
                             Spacer(modifier = Modifier.width(10.dp))

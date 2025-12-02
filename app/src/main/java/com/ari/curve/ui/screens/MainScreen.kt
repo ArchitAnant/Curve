@@ -111,6 +111,7 @@ fun MainScreen(vm : MainViewModel,modifier: Modifier = Modifier) {
                     onClick = {
                         if (message.isNotEmpty()) {
                             vm.generateTasks(message)
+                            message=""
                         }
                     },
                     modifier = modifier

@@ -27,16 +27,22 @@ import androidx.compose.ui.unit.sp
 import com.ari.curve.data.dao.Task
 import com.ari.curve.regular_font
 import com.ari.curve.semibold_font
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 fun formatDateTime(raw: String): String {
-    val input = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-    val output = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")
+    // Parse local datetime (no timezone)
+    val localDT = LocalDateTime.parse(raw, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
-    val parsed = LocalDateTime.parse(raw, input)
-    return parsed.format(output)
+    // Convert to system zone (assumes the input is already local time)
+    val zoned = localDT.atZone(ZoneId.systemDefault())
+
+    val output = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a")
+    return zoned.format(output)
 }
+
 
 @Composable
 fun TaskItem(task: Task, onExpandClick:(Task)->Unit, modifier: Modifier = Modifier) {
@@ -78,7 +84,7 @@ fun TaskItem(task: Task, onExpandClick:(Task)->Unit, modifier: Modifier = Modifi
                 fontSize = 12.sp
             )
             Spacer(modifier= Modifier.weight(1f))
-            if (task.attachments[task.attachments.keys.toList()[0]]?.isNotEmpty() == true){
+            if (task.attachments.isNotEmpty()){
                 Box(
                     modifier = Modifier
                         .size(10.dp)
